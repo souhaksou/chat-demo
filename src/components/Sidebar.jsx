@@ -1,0 +1,50 @@
+import { useEffect } from "react";
+import { Link, useLocation } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
+import { getChatList } from "../chat/storage";
+import { setChatList } from "../features/chat/chatSlice";
+
+const Sidebar = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const list = getChatList();
+    dispatch(setChatList(list));
+  }, [dispatch]);
+  const { chatList } = useSelector((state) => state.chat);
+
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const checkPath = (id) => {
+    const path = `/local/${id}`;
+    return currentPath === path;
+  };
+
+  return (
+    <nav className="w:full h:100vh bg:#0C2556 p:16">
+      <h3 className="f:20 fg:white f:bold p:8|16 mb:24">
+        <i className="bi bi-android"></i>
+        <span className="ml:16">Chat AI</span>
+      </h3>
+      <Link
+        to="/"
+        className="block p:16 r:8 mb:32 t:left bg:#F7F9FC transition:200ms ~easing:ease-in {bg:white;fg:gray;}:hover"
+      >
+        <i className="bi bi-plus-circle"></i>
+        <span className="ml:16">New Chat</span>
+      </Link>
+      {chatList.map((item) => (
+        <Link
+          to={`/local/${item.id}`}
+          key={item.id}
+          className={`${
+            checkPath(item.id) ? "fg:white bg:#1F3663" : "fg:#8192B0"
+          } block p:8|16 r:8 white-space:nowrap text-overflow:ellipsis overflow-x:hidden`}
+        >
+          {item.name}
+        </Link>
+      ))}
+    </nav>
+  );
+};
+
+export default Sidebar;

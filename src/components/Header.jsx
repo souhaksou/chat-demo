@@ -7,7 +7,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="flex jc:space-between ai:center p:16 bg:white abs top:0 left:0 w:full">
+      <header className="flex jc:space-between ai:center p:16 bg:#F7F9FC abs top:0 left:0 w:full">
         <div>
           <button
             className="fg:#8F9FBC f:32 px:16 h:36 inline-block"

@@ -1,12 +1,17 @@
 const getChatList = () => {
-  const raw = localStorage.getItem('CHAT_LIST');
-  const list = raw ? JSON.parse(raw) : [];
-  list.forEach(item => {
-    item.createdAt = new Date(item.createdAt).toISOString();
-    item.updatedAt = new Date(item.updatedAt).toISOString();
-  })
-  list.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-  return list;
+  try {
+    const raw = localStorage.getItem('CHAT_LIST');
+    const list = raw ? JSON.parse(raw) : [];
+    list.forEach(item => {
+      item.createdAt = new Date(item.createdAt).toISOString();
+      item.updatedAt = new Date(item.updatedAt).toISOString();
+    })
+    list.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+    return list;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 };
 
 const saveChatList = (list) => {
@@ -37,9 +42,14 @@ const updateChatInList = (updated) => {
 };
 
 const getChat = (id) => {
-  const raw = localStorage.getItem(`CHAT_${id}`);
-  const result = raw ? JSON.parse(raw) : {};
-  return result;
+  try {
+    const raw = localStorage.getItem(`CHAT_${id}`);
+    const result = raw ? JSON.parse(raw) : [];
+    return result;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 };
 
 const saveChat = (item) => {

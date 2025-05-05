@@ -19,6 +19,19 @@ const Sidebar = () => {
     return currentPath === path;
   };
 
+  const editOneChat = (item, event) => {
+    console.log(item);
+    event.stopPropagation();
+    event.preventDefault();
+    console.log("click edit");
+  };
+  const deleteOneChat = (item, event) => {
+    console.log(item);
+    event.stopPropagation();
+    event.preventDefault();
+    console.log("click delete");
+  };
+
   return (
     <nav className="w:full h:100vh bg:#0C2556 p:16">
       <h3 className="f:20 fg:white f:bold p:8|16 mb:24">
@@ -38,9 +51,27 @@ const Sidebar = () => {
           key={item.id}
           className={`${
             checkPath(item.id) ? "fg:white bg:#1F3663" : "fg:#8192B0"
-          } block p:8|16 r:8 white-space:nowrap text-overflow:ellipsis overflow-x:hidden`}
+          } block p:8|40|8|16 r:8 white-space:nowrap text-overflow:ellipsis overflow-x:hidden rel {block!;}:hover>div`}
         >
-          {item.name}
+          <span> {item.name} </span>
+          <div className="hidden abs top:50% right:0 translateY(-50%) flex ai:center">
+            <button
+              className="p:4 inline-block fg:gray-30"
+              onClick={(event) => {
+                editOneChat(item, event);
+              }}
+            >
+              <i className="bi bi-pencil-square"></i>
+            </button>
+            <button
+              className="p:4 inline-block fg:red"
+              onClick={(event) => {
+                deleteOneChat(item, event);
+              }}
+            >
+              <i className="bi bi-x-square-fill"></i>
+            </button>
+          </div>
         </Link>
       ))}
     </nav>

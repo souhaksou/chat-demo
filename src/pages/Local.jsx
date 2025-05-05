@@ -9,6 +9,7 @@ import {
   saveChat,
 } from "../chat/storage";
 import { setChatList } from "../features/chat/chatSlice";
+import MarkdownView from "react-showdown";
 import "github-markdown-css/github-markdown.css";
 import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-light.css";
@@ -50,11 +51,16 @@ const Local = () => {
     }
   };
 
+  const bottomRef = useRef(null);
+
   useEffect(() => {
     const codeBlocks = document.querySelectorAll(".markdown-body pre code");
     codeBlocks.forEach((block) => {
-      hljs.highlightElement(block);
+      if (!block.dataset.highlighted) {
+        hljs.highlightElement(block);
+      }
     });
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   return (
@@ -69,12 +75,18 @@ const Local = () => {
                 </div>
               ) : (
                 <div className="mb:48">
-                  <div className="markdown-body {h:1!;}_hr">{item.content}</div>
+                  <div className="markdown-body">
+                    <MarkdownView
+                      markdown={item.content}
+                      options={{ tables: true, emoji: true }}
+                    />
+                  </div>
                 </div>
               )}
             </div>
           ))}
           <div className="h:80"></div>
+          <div ref={bottomRef}></div>
           <div className="w:full abs bottom:0 left:0">
             <div className="w:full max-w:screen-2xs mx:auto mb:32 rel">
               <textarea

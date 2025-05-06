@@ -1,8 +1,15 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
-import { getChatList } from "../chat/storage";
+import {
+  getChatList,
+  updateChatInList,
+  removeChatFromList,
+  removeChat,
+} from "../chat/storage";
 import { setChatList } from "../features/chat/chatSlice";
+import openEditModal from "../modals/editModal";
+import openConfirmModal from "../modals/confirmModal";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -19,17 +26,27 @@ const Sidebar = () => {
     return currentPath === path;
   };
 
-  const editOneChat = (item, event) => {
-    console.log(item);
+  const editOneChat = async (item, event) => {
     event.stopPropagation();
     event.preventDefault();
-    console.log("click edit");
+    const result = await openEditModal({ msg: "編輯名稱", item });
+    if (result) {
+      updateChatInList(result);
+      const list = getChatList();
+      dispatch(setChatList(list));
+    }
   };
-  const deleteOneChat = (item, event) => {
-    console.log(item);
+  const deleteOneChat = async (item, event) => {
     event.stopPropagation();
     event.preventDefault();
-    console.log("click delete");
+    const result = await openConfirmModal("請確認是否刪除");
+    if (result) {
+      const { id } = item;
+      removeChatFromList(id);
+      removeChat(id);
+      const list = getChatList();
+      dispatch(setChatList(list));
+    }
   };
 
   return (

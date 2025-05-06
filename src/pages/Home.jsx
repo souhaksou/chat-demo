@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 import { chat } from "../chat";
 import { getChatList, addChatToList, saveChat } from "../chat/storage";
 import { setChatList } from "../features/chat/chatSlice";
+import openAlertModal from "../modals/alertModal";
+import { openLoadingModal, closeLoadingModal } from "../modals/loadingModal";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -13,6 +15,11 @@ const Home = () => {
   const inputRef = useRef();
   const newChat = async () => {
     const content = inputRef.current.value.trim();
+    if (content.length === 0) {
+      await openAlertModal("請輸入問題");
+      return;
+    }
+    openLoadingModal();
     const message = [{ role: "user", content }];
     const res = await chat(message);
     const { data, success } = res;
@@ -28,7 +35,11 @@ const Home = () => {
       saveChat(chatData);
       const list = getChatList();
       dispatch(setChatList(list));
+      closeLoadingModal();
       navigate(`/local/${id}`);
+    } else {
+      closeLoadingModal();
+      await openAlertModal("錯誤");
     }
   };
 

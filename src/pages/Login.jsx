@@ -1,9 +1,12 @@
 import { useState } from "react";
-
 import robot from "../images/android.svg";
 
 const Login = () => {
   const [isPassword, setIsPassword] = useState(true);
+
+  const login = async () => {
+    console.log("login");
+  };
 
   return (
     <section className="bg:#E2ECFC h:full min-h:100vh p:32 flex jc:center ai:center">
@@ -47,7 +50,10 @@ const Login = () => {
             ></i>
           </button>
         </div>
-        <button className="mb:32 block w:full h:60 r:8 fg:#E2ECFC bg:#0C2556 b:1|solid|#0C2556 transition:400ms {fg:#0C2556;bg:#E2ECFC;}:hover">
+        <button
+          onClick={login}
+          className="mb:32 block w:full h:60 r:8 fg:#E2ECFC bg:#0C2556 b:1|solid|#0C2556 transition:400ms {fg:#0C2556;bg:#E2ECFC;}:hover"
+        >
           登入
         </button>
         <button className="block w:full h:60 r:8 fg:#0C2556 bg:#E2ECFC b:1|solid|#0C2556 transition:400ms {fg:#E2ECFC;bg:#0C2556;}:hover">

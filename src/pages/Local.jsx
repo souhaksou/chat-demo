@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
+import openAlertModal from "../modals/alertModal";
+import { openLoadingModal, closeLoadingModal } from "../modals/loadingModal";
 import { chat } from "../chat";
 import {
   getChatList,
@@ -36,6 +38,11 @@ const Local = () => {
   const inputRef = useRef();
   const updateChat = async () => {
     const content = inputRef.current.value.trim();
+    if (content.length === 0) {
+      await openAlertModal("請輸入問題");
+      return;
+    }
+    openLoadingModal();
     const message = [...messages, { role: "user", content }];
     const res = await chat(message);
     const { data, success } = res;
@@ -48,6 +55,11 @@ const Local = () => {
       saveChat(chatData);
       const list = getChatList();
       dispatch(setChatList(list));
+      inputRef.current.value = "";
+      closeLoadingModal();
+    } else {
+      closeLoadingModal();
+      await openAlertModal("錯誤");
     }
   };
 
@@ -60,7 +72,7 @@ const Local = () => {
         hljs.highlightElement(block);
       }
     });
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    bottomRef.current?.scrollIntoView();
   }, [messages]);
 
   return (

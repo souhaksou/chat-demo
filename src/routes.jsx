@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router";
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import Local from "./pages/Local";
-import Login from "./pages/login";
+// import Login from "./pages/login";
 import NotFound from "./pages/Notfound";
 
 const routes = [
@@ -24,10 +24,10 @@ const routes = [
       },
     ],
   },
-  {
-    path: "/login",
-    element: <Login />,
-  },
+  // {
+  //   path: "/login",
+  //   element: <Login />,
+  // },
   {
     path: "*",
     element: <NotFound />,

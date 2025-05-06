@@ -3,7 +3,7 @@ import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import Local from "./pages/Local";
 // import Login from "./pages/login";
-import NotFound from "./pages/Notfound";
+import NotFound from "./pages/NotFound";
 
 const routes = [
   {

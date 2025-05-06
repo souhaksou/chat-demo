@@ -5,7 +5,7 @@ const MySwal = withReactContent(Swal);
 
 let closeModal = null; // 模組層級的變數，供外部存取
 
-const openLoadingModal = () => {
+const openLoadingModal = (msg) => {
   return new Promise((resolve) => {
     closeModal = () => {
       MySwal.close(); // 關閉 modal
@@ -13,7 +13,7 @@ const openLoadingModal = () => {
     MySwal.fire({
       html: (
         <div>
-          <p className="f:32 f:bold my:32">請稍等</p>
+          <p className="f:32 f:bold my:32">{msg}</p>
         </div>
       ),
       showConfirmButton: false,

@@ -19,7 +19,7 @@ const Home = () => {
       await openAlertModal("請輸入問題");
       return;
     }
-    openLoadingModal();
+    openLoadingModal("請稍等");
     const message = [{ role: "user", content }];
     const res = await chat(message);
     const { data, success } = res;

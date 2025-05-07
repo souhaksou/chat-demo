@@ -17,9 +17,9 @@ const Header = () => {
           </button>
         </div>
         <div>
-          <button className="fg:#0C2556 f:32 px:16 h:36 inline-block">
+          <div className="fg:#0C2556 f:32 px:16 h:36 inline-block">
             <i className="bi bi-person-circle"></i>
-          </button>
+          </div>
         </div>
       </header>
       <div className="h:68"></div>

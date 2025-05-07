@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import Spinner from "../images/spinner";
 
 const MySwal = withReactContent(Swal);
 
@@ -12,8 +13,12 @@ const openLoadingModal = (msg) => {
     };
     MySwal.fire({
       html: (
-        <div>
-          <p className="f:32 f:bold my:32">{msg}</p>
+        <div className="flex jc:center ai:center my:32">
+          <div>
+            <Spinner width={32} height={32} />
+          </div>
+          <div className="w:32"></div>
+          <p className="f:32 f:bold">{msg}</p>
         </div>
       ),
       showConfirmButton: false,

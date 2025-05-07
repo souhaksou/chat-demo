@@ -1,15 +1,23 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
+import dayjs from "dayjs";
+import exampleJSON from "../chat/example.json";
 import {
   getChatList,
+  addChatToList,
   updateChatInList,
   removeChatFromList,
   removeChat,
+  getChat,
+  saveChat,
 } from "../chat/storage";
 import { setChatList } from "../features/chat/chatSlice";
+import openAlertModal from "../modals/alertModal";
 import openEditModal from "../modals/editModal";
 import openConfirmModal from "../modals/confirmModal";
+import openFilesModal from "../modals/filesModal";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -49,19 +57,121 @@ const Sidebar = () => {
     }
   };
 
+  const processFiles = async () => {
+    const result = await openFilesModal({ msg: "匯入 / 匯出", item: chatList });
+    if (result.key) {
+      switch (result.key) {
+        case "import":
+          importFile();
+          break;
+        case "export":
+          exportFile(result.data);
+          break;
+        case "example":
+          exampleFile();
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
+  const importFile = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json";
+    input.style.display = "none";
+    input.addEventListener("change", () => {
+      const file = input.files?.[0];
+      if (!file) {
+        document.body.removeChild(input);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const json = JSON.parse(reader.result);
+          convertToChat(json);
+        } catch {
+          openAlertModal("⚠️ 這不是有效的 JSON 檔案");
+          return;
+        }
+        document.body.removeChild(input);
+      };
+      reader.onerror = () => {
+        openAlertModal("❌ 檔案讀取錯誤");
+        document.body.removeChild(input);
+      };
+      reader.readAsText(file);
+    });
+    document.body.appendChild(input);
+    input.click();
+  };
+
+  const exampleFile = () => {
+    convertToChat(exampleJSON);
+  };
+
+  const convertToChat = (JSONFile) => {
+    const baseTime = Date.now();
+    for (let index = JSONFile.length - 1; index >= 0; index--) {
+      const chat = JSONFile[index];
+      const id = uuidv4();
+      const createdAt = new Date(baseTime + index);
+      const updatedAt = createdAt;
+      const listData = { id, name: chat.name, createdAt, updatedAt };
+      const chatData = { id, messages: chat.messages };
+      addChatToList(listData);
+      saveChat(chatData);
+    }
+    const list = getChatList();
+    dispatch(setChatList(list));
+  };
+
+  const exportFile = (chatIds) => {
+    const keyList = chatList.filter((list) => chatIds.includes(list.id));
+    const chats = keyList.map((key) => ({ ...key, messages: getChat(key.id) }));
+    const fileName = `chat_${dayjs().format("YYYYMMDDAhhmm")}`;
+    downloadFile(chats, fileName);
+  };
+
+  const downloadFile = (dataArray, fileName) => {
+    const jsonStr = JSON.stringify(dataArray, null, 2);
+    const blob = new Blob([jsonStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${fileName}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
-    <nav className="w:full h:100vh bg:#0C2556 p:16">
-      <h3 className="f:20 fg:white f:bold p:8|16 mb:24">
-        <i className="bi bi-android"></i>
-        <span className="ml:16">Chat AI</span>
+    <nav className="w:full h:100vh p:16">
+      <div className="h:16"></div>
+      <h3 className="flex jc:space-between ai:center p:8">
+        <div className="f:20 fg:white f:bold user-select:none">
+          <i className="bi bi-android"></i>
+          <span className="mx:16">Chat AI</span>
+        </div>
+        <button
+          onClick={() => processFiles()}
+          className="inline-block p:4 f:20 fg:gray-20"
+        >
+          <i className="bi bi-database-fill-gear"></i>
+        </button>
       </h3>
+      <div className="h:32"></div>
       <Link
         to="/"
-        className="block p:16 r:8 mb:32 t:left bg:#F7F9FC transition:200ms ~easing:ease-in {bg:white;fg:gray;}:hover"
+        className="block p:12|16 r:8 t:left bg:#F7F9FC transition:200ms ~easing:ease-in {bg:white;fg:gray;}:hover"
       >
         <i className="bi bi-plus-circle"></i>
         <span className="ml:16">New Chat</span>
       </Link>
+      <div className="h:32"></div>
       {chatList.map((item) => (
         <Link
           to={`/local/${item.id}`}

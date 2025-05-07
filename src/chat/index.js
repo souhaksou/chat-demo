@@ -12,7 +12,7 @@ const chat = async (message) => {
   try {
     const messages = [{
       role: 'system',
-      content: '請用繁體中文回答'
+      content: '請用繁體中文回答，而且是台灣人的語氣，不要使用簡體中文以及中港澳的語氣。如果是程式語言相關問題請優先用javascript回答。'
     }, ...message];
     const res = await client.post(
       '/chat/completions',

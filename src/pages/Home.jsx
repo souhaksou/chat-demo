@@ -44,7 +44,7 @@ const Home = () => {
   };
 
   return (
-    <div className="h:calc(100vh-68px) bg:#F7F9FC overflow-y:auto p:16 flex flex:col jc:center ai:center">
+    <div className="min-h:calc(100vh-68px) bg:#F7F9FC p:16 flex flex:col jc:center ai:center">
       <h2 className="f:bold f:24">我可以為你做什麼？</h2>
       <div className="w:full max-w:screen-2xs my:32 rel">
         <textarea

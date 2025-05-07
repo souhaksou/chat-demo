@@ -2,6 +2,7 @@ import { Outlet } from "react-router";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { useSelector } from "react-redux";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 
 const MainLayout = () => {
   const { isShow } = useSelector((state) => state.sidebar);
@@ -12,9 +13,11 @@ const MainLayout = () => {
         <div
           className={`${
             isShow ? "" : "translateX(-100%)"
-          } transition:400ms ~easing:ease-in w:full max-w:240 h:100vh abs top:0 left:0`}
+          } bg:#0C2556 transition:400ms ~easing:ease-in w:full max-w:240 h:100vh abs top:0 left:0`}
         >
-          <Sidebar />
+          <OverlayScrollbarsComponent defer>
+            <Sidebar />
+          </OverlayScrollbarsComponent>
         </div>
         <div
           className={`${
@@ -27,7 +30,9 @@ const MainLayout = () => {
           } transition:400ms ~easing:ease-in w:full rel`}
         >
           <Header />
-          <Outlet />
+          <OverlayScrollbarsComponent defer>
+            <Outlet />
+          </OverlayScrollbarsComponent>
         </div>
       </div>
     </section>

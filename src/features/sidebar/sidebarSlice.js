@@ -1,19 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isShow: true,
+  pcShow: true,
+  phoneShow: false
 };
 
 const sidebarSlice = createSlice({
   name: 'sidebar',
   initialState,
   reducers: {
-    setShow: (state, action) => {
-      state.isShow = action.payload;
+    setPcShow: (state, action) => {
+      state.pcShow = action.payload;
+    },
+    setPhoneShow: (state, action) => {
+      state.phoneShow = action.payload;
     },
   },
 });
 
-export const { setShow } = sidebarSlice.actions;
+export const { setPcShow, setPhoneShow } = sidebarSlice.actions;
 
 export default sidebarSlice.reducer;

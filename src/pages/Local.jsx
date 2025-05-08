@@ -16,12 +16,13 @@ import MarkdownView from "react-showdown";
 import hljs from "highlight.js";
 
 const Local = () => {
-  const { isShow } = useSelector((state) => state.sidebar);
+  const { pcShow } = useSelector((state) => state.sidebar);
 
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState(null);
 
   const dispatch = useDispatch();
+
   const { chatList } = useSelector((state) => state.chat);
   const params = useParams();
   useEffect(() => {
@@ -138,17 +139,18 @@ const Local = () => {
           <p className="my:32 t:center">無資料</p>
         )}
       </div>
+      {/* 輸入框 */}
       {currentChat && messages ? (
         <div className="w:full fixed bottom:0 right:0 flex pointer-events:none">
           <div
             className={`${
-              isShow ? "max-w:240" : "max-w:0"
-            } transition:400ms ~easing:ease-in w:full`}
+              pcShow ? "max-w:240" : "max-w:0"
+            } transition:400ms ~easing:ease-in w:full hidden block@xs`}
           ></div>
           <div
             className={`${
-              isShow ? "max-w:calc(100vw-240px)" : "max-w:100vw"
-            } transition:400ms ~easing:ease-in w:full pointer-events:auto flex jc:center ai:center p:32`}
+              pcShow ? "max-w:calc(100vw-240px)" : "max-w:100vw"
+            } transition:400ms ~easing:ease-in w:full pointer-events:auto flex jc:center ai:center p:32 max-w:100vw!@<xs`}
           >
             <div className="w:full max-w:screen-xs rel">
               <textarea

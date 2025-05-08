@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setShow } from "../features/sidebar/sidebarSlice";
+import { setPcShow, setPhoneShow } from "../features/sidebar/sidebarSlice";
 
 const Header = () => {
-  const { isShow } = useSelector((state) => state.sidebar);
+  const { pcShow, phoneShow } = useSelector((state) => state.sidebar);
   const dispatch = useDispatch();
 
   return (
@@ -10,10 +10,18 @@ const Header = () => {
       <header className="flex jc:space-between ai:center p:16 bg:#F7F9FC abs top:0 left:0 w:full">
         <div>
           <button
-            className="fg:#8F9FBC f:32 px:16 h:36 inline-block"
-            onClick={() => dispatch(setShow(!isShow))}
+            className="fg:#8F9FBC f:32 px:16 h:36 hidden inline-block@xs"
+            onClick={() => dispatch(setPcShow(!pcShow))}
           >
-            <i className={`bi bi-text-indent-${isShow ? "right" : "left"}`}></i>
+            <i className={`bi bi-text-indent-${pcShow ? "right" : "left"}`}></i>
+          </button>
+          <button
+            className="fg:#8F9FBC f:32 px:16 h:36 inline-block hidden@xs"
+            onClick={() => dispatch(setPhoneShow(!phoneShow))}
+          >
+            <i
+              className={`bi bi-text-indent-${phoneShow ? "right" : "left"}`}
+            ></i>
           </button>
         </div>
         <div>

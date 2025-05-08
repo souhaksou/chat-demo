@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
+import { setPhoneShow } from "../features/sidebar/sidebarSlice";
 import exampleJSON from "../chat/example.json";
 import {
   getChatList,
@@ -20,6 +21,8 @@ import openConfirmModal from "../modals/confirmModal";
 import openFilesModal from "../modals/filesModal";
 
 const Sidebar = () => {
+  const { phoneShow } = useSelector((state) => state.sidebar);
+
   const dispatch = useDispatch();
   useEffect(() => {
     const list = getChatList();
@@ -33,6 +36,9 @@ const Sidebar = () => {
     const path = `/local/${id}`;
     return currentPath === path;
   };
+  useEffect(() => {
+    dispatch(setPhoneShow(false));
+  }, [dispatch, location.pathname]); // 只要 pathname 改變就會觸發
 
   const editOneChat = async (item, event) => {
     event.stopPropagation();
@@ -150,11 +156,18 @@ const Sidebar = () => {
 
   return (
     <nav className="w:full h:100vh p:16">
-      <div className="h:16"></div>
       <h3 className="flex jc:space-between ai:center p:8">
+        <button
+          className="fg:#8F9FBC f:32 h:36 inline-block hidden@xs"
+          onClick={() => dispatch(setPhoneShow(!phoneShow))}
+        >
+          <i
+            className={`bi bi-text-indent-${phoneShow ? "right" : "left"}`}
+          ></i>
+        </button>
         <div className="f:20 fg:white f:bold user-select:none">
-          <i className="bi bi-android"></i>
-          <span className="mx:16">Chat AI</span>
+          <i className="bi bi-android hidden inline@xs"></i>
+          <span className="mx:16@xs">Chat AI</span>
         </div>
         <button
           onClick={() => processFiles()}

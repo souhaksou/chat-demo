@@ -23,7 +23,7 @@ const Local = () => {
 
   const dispatch = useDispatch();
 
-  const { chatList } = useSelector((state) => state.chat);
+  const chatList = useSelector((state) => state.chat.chatList);
   const params = useParams();
   useEffect(() => {
     const chatHistory = chatList.find((item) => item.id === params.id);

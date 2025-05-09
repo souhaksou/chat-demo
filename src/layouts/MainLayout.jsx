@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 
 const MainLayout = () => {
-  const { pcShow, phoneShow } = useSelector((state) => state.sidebar);
+  const pcShow = useSelector((state) => state.sidebar.pcShow);
+  const phoneShow = useSelector((state) => state.sidebar.phoneShow);
 
   return (
     <section className="bg:white w:full overflow-x:hidden">

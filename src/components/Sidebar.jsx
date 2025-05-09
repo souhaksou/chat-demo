@@ -28,7 +28,7 @@ const Sidebar = () => {
     const list = getChatList();
     dispatch(setChatList(list));
   }, [dispatch]);
-  const { chatList } = useSelector((state) => state.chat);
+  const chatList = useSelector((state) => state.chat.chatList);
 
   const location = useLocation();
   const currentPath = location.pathname;

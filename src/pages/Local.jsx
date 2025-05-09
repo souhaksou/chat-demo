@@ -118,7 +118,9 @@ const Local = () => {
               <div key={index}>
                 {item.role === "user" ? (
                   <div className="flex jc:end mb:48">
-                    <p className="w:65% bg:#E2ECFC p:16 r:8">{item.content}</p>
+                    <p className="w:full max-w:80% max-w:90%@xs max-w:screen-2xs@md bg:#E2ECFC p:16 r:8 word-break:break-all;">
+                      {item.content}
+                    </p>
                   </div>
                 ) : (
                   <div className="mb:48">

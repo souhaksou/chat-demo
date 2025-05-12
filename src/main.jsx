@@ -7,6 +7,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "overlayscrollbars/overlayscrollbars.css";
 import "github-markdown-css/github-markdown.css";
 import "highlight.js/styles/atom-one-light.css";
+import "katex/dist/katex.min.css";
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(

@@ -15,6 +15,8 @@ import {
 import { setChatList } from "../features/chat/chatSlice";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 import hljs from "highlight.js";
 
 const Local = () => {
@@ -138,7 +140,7 @@ const Local = () => {
         {currentChat && messages ? (
           <div className="w:full max-w:screen-xs mx:auto">
             {messages.map((item, index) => (
-              <div key={index}>
+              <div key={index} className="overflow-x:hidden">
                 {item.role === "user" ? (
                   <div className="flex jc:end mb:48">
                     <div className="w:full max-w:80% max-w:90%@xs max-w:screen-2xs@md bg:#E2ECFC p:32|16 r:8 word-break:break-all rel">
@@ -152,11 +154,12 @@ const Local = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="mb:48">
+                  <div className="mb:48 overflow-x:auto">
                     <div className="markdown-body">
                       <ReactMarkdown
                         children={item.content}
-                        remarkPlugins={[remarkGfm]}
+                        remarkPlugins={[remarkGfm, remarkMath]} // 多個 remark plugin
+                        rehypePlugins={[rehypeKatex]} // 也能搭配 rehype plugin
                       />
                     </div>
                   </div>

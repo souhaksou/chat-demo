@@ -64,6 +64,7 @@ const saveChat = (item) => {
     const { id, messages } = item;
     localStorage.setItem(`CHAT_${id}`, JSON.stringify(messages));
   } catch (error) {
+    console.error(error);
     if (error.name === 'QuotaExceededError') {
       throw new Error('QuotaExceeded'); // 明確地拋出錯誤
     }

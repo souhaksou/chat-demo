@@ -13,7 +13,8 @@ import {
   saveChat,
 } from "../chat/storage";
 import { setChatList } from "../features/chat/chatSlice";
-import MarkdownView from "react-showdown";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import hljs from "highlight.js";
 
 const Local = () => {
@@ -153,9 +154,9 @@ const Local = () => {
                 ) : (
                   <div className="mb:48">
                     <div className="markdown-body">
-                      <MarkdownView
-                        markdown={item.content}
-                        options={{ tables: true, emoji: true }}
+                      <ReactMarkdown
+                        children={item.content}
+                        remarkPlugins={[remarkGfm]}
                       />
                     </div>
                   </div>

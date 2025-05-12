@@ -15,7 +15,14 @@ const getChatList = () => {
 };
 
 const saveChatList = (list) => {
-  localStorage.setItem('CHAT_LIST', JSON.stringify(list));
+  try {
+    localStorage.setItem('CHAT_LIST', JSON.stringify(list));
+  } catch (error) {
+    console.error(error);
+    if (error.name === 'QuotaExceededError') {
+      throw new Error('QuotaExceeded'); // 明確地拋出錯誤
+    }
+  }
 };
 
 const addChatToList = (item) => {
@@ -53,8 +60,14 @@ const getChat = (id) => {
 };
 
 const saveChat = (item) => {
-  const { id, messages } = item;
-  localStorage.setItem(`CHAT_${id}`, JSON.stringify(messages));
+  try {
+    const { id, messages } = item;
+    localStorage.setItem(`CHAT_${id}`, JSON.stringify(messages));
+  } catch (error) {
+    if (error.name === 'QuotaExceededError') {
+      throw new Error('QuotaExceeded'); // 明確地拋出錯誤
+    }
+  }
 };
 
 const removeChat = (id) => {

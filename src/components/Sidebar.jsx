@@ -119,19 +119,27 @@ const Sidebar = () => {
   };
 
   const convertToChat = (JSONFile) => {
-    const baseTime = Date.now();
-    for (let index = JSONFile.length - 1; index >= 0; index--) {
-      const chat = JSONFile[index];
-      const id = uuidv4();
-      const createdAt = new Date(baseTime + index);
-      const updatedAt = createdAt;
-      const listData = { id, name: chat.name, createdAt, updatedAt };
-      const chatData = { id, messages: chat.messages };
-      addChatToList(listData);
-      saveChat(chatData);
+    try {
+      const baseTime = Date.now();
+      for (let index = JSONFile.length - 1; index >= 0; index--) {
+        const chat = JSONFile[index];
+        const id = uuidv4();
+        const createdAt = new Date(baseTime + index);
+        const updatedAt = createdAt;
+        const listData = { id, name: chat.name, createdAt, updatedAt };
+        const chatData = { id, messages: chat.messages };
+        addChatToList(listData);
+        saveChat(chatData);
+      }
+      const list = getChatList();
+      dispatch(setChatList(list));
+    } catch (error) {
+      console.error(error);
+      if (error.message === "QuotaExceeded") {
+        openAlertModal("儲存空間不夠！");
+      }
+      return;
     }
-    const list = getChatList();
-    dispatch(setChatList(list));
   };
 
   const exportFile = (chatIds) => {

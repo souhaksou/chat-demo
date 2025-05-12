@@ -53,29 +53,37 @@ const Local = () => {
 
   const inputRef = useRef();
   const updateChat = async (sendMessages = messages) => {
-    const content = inputRef.current.value.trim();
-    if (content.length === 0) {
-      await openAlertModal("請輸入問題");
+    try {
+      const content = inputRef.current.value.trim();
+      if (content.length === 0) {
+        await openAlertModal("請輸入問題");
+        return;
+      }
+      inputRef.current.value = "";
+      openLoadingModal("請稍等");
+      const message = [...sendMessages, { role: "user", content }];
+      const res = await chat(message);
+      const { data, success } = res;
+      if (success) {
+        const updatedAt = new Date();
+        const listData = { ...currentChat, updatedAt };
+        const { id } = listData;
+        const chatData = { id, messages: [...message, ...data] };
+        updateChatInList(listData);
+        saveChat(chatData);
+        const list = getChatList();
+        dispatch(setChatList(list));
+        closeLoadingModal();
+      } else {
+        closeLoadingModal();
+        await openAlertModal("錯誤");
+      }
+    } catch (error) {
+      console.error(error);
+      if (error.message === "QuotaExceeded") {
+        openAlertModal("儲存空間不夠！");
+      }
       return;
-    }
-    inputRef.current.value = "";
-    openLoadingModal("請稍等");
-    const message = [...sendMessages, { role: "user", content }];
-    const res = await chat(message);
-    const { data, success } = res;
-    if (success) {
-      const updatedAt = new Date();
-      const listData = { ...currentChat, updatedAt };
-      const { id } = listData;
-      const chatData = { id, messages: [...message, ...data] };
-      updateChatInList(listData);
-      saveChat(chatData);
-      const list = getChatList();
-      dispatch(setChatList(list));
-      closeLoadingModal();
-    } else {
-      closeLoadingModal();
-      await openAlertModal("錯誤");
     }
   };
 

@@ -14,32 +14,40 @@ const Home = () => {
 
   const inputRef = useRef();
   const newChat = async () => {
-    const content = inputRef.current.value.trim();
-    if (content.length === 0) {
-      await openAlertModal("請輸入問題");
+    try {
+      const content = inputRef.current.value.trim();
+      if (content.length === 0) {
+        await openAlertModal("請輸入問題");
+        return;
+      }
+      openLoadingModal("請稍等");
+      const message = [{ role: "user", content }];
+      const res = await chat(message);
+      const { data, success } = res;
+      if (success) {
+        const id = uuidv4();
+        const name = content;
+        const messages = [...message, ...data];
+        const createdAt = new Date();
+        const updatedAt = createdAt;
+        const listData = { id, name, createdAt, updatedAt };
+        const chatData = { id, messages };
+        addChatToList(listData);
+        saveChat(chatData);
+        const list = getChatList();
+        dispatch(setChatList(list));
+        closeLoadingModal();
+        navigate(`/local/${id}`);
+      } else {
+        closeLoadingModal();
+        await openAlertModal("錯誤");
+      }
+    } catch (error) {
+      console.error(error);
+      if (error.message === "QuotaExceeded") {
+        openAlertModal("儲存空間不夠！");
+      }
       return;
-    }
-    openLoadingModal("請稍等");
-    const message = [{ role: "user", content }];
-    const res = await chat(message);
-    const { data, success } = res;
-    if (success) {
-      const id = uuidv4();
-      const name = content;
-      const messages = [...message, ...data];
-      const createdAt = new Date();
-      const updatedAt = createdAt;
-      const listData = { id, name, createdAt, updatedAt };
-      const chatData = { id, messages };
-      addChatToList(listData);
-      saveChat(chatData);
-      const list = getChatList();
-      dispatch(setChatList(list));
-      closeLoadingModal();
-      navigate(`/local/${id}`);
-    } else {
-      closeLoadingModal();
-      await openAlertModal("錯誤");
     }
   };
 

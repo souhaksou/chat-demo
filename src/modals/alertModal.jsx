@@ -15,9 +15,7 @@ const confirmModal = (msg) => {
           <div className="flex jc:end">
             <button
               className="inline-block p:4|8 r:4 bg:red f:16 fg:white"
-              onClick={() => {
-                closeModal();
-              }}
+              onClick={() => closeModal()}
             >
               關閉
             </button>

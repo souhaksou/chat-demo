@@ -51,7 +51,7 @@ const Login = () => {
           </button>
         </div>
         <button
-          onClick={login}
+          onClick={() => login()}
           className="mb:32 block w:full h:60 r:8 fg:#E2ECFC bg:#0C2556 b:1|solid|#0C2556 transition:400ms {fg:#0C2556;bg:#E2ECFC;}:hover"
         >
           登入

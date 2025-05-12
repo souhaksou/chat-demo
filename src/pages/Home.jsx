@@ -53,7 +53,7 @@ const Home = () => {
           className="resize:none block w:full p:16|48|16|16 r:8 line-height:1.5 bg:gray-5 b:1|solid|gray-20 {bg:rgba(255,255,255,0.5);}:focus"
         ></textarea>
         <button
-          onClick={newChat}
+          onClick={() => newChat()}
           className="abs top:50% right:16 translateY(-50%) f:24 inline-block transition:200ms ~easing:ease-in {fg:gray;}:hover"
         >
           <i className="bi bi-send-fill"></i>

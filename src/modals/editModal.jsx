@@ -14,7 +14,7 @@ const editModal = ({ msg, item }) => {
           newName = newVal;
         } else {
           const errEl = document.getElementById("input-error");
-          errEl.innerText = "請輸入不同且非空白的名稱";
+          errEl.innerText = "請輸入不同且非空白的內容";
           errEl.style.color = "red";
           return;
         }
@@ -36,18 +36,14 @@ const editModal = ({ msg, item }) => {
           <div className="flex jc:end">
             <button
               className="inline-block p:4|8 r:4 bg:#0C2556 f:16 fg:white"
-              onClick={() => {
-                closeModal(true);
-              }}
+              onClick={() => closeModal(true)}
             >
               確定
             </button>
             <div className="w:16"></div>
             <button
               className="inline-block p:4|8 r:4 bg:red f:16 fg:white"
-              onClick={() => {
-                closeModal(false);
-              }}
+              onClick={() => closeModal(false)}
             >
               取消
             </button>

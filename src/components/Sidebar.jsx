@@ -197,17 +197,13 @@ const Sidebar = () => {
           <div className="hidden abs top:50% right:0 translateY(-50%) flex ai:center">
             <button
               className="p:4 inline-block fg:gray-30"
-              onClick={(event) => {
-                editOneChat(item, event);
-              }}
+              onClick={(event) => editOneChat(item, event)}
             >
               <i className="bi bi-pencil-square"></i>
             </button>
             <button
               className="p:4 inline-block fg:red"
-              onClick={(event) => {
-                deleteOneChat(item, event);
-              }}
+              onClick={(event) => deleteOneChat(item, event)}
             >
               <i className="bi bi-x-square-fill"></i>
             </button>

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
+import openEditModal from "../modals/editModal";
 import openAlertModal from "../modals/alertModal";
 import { openLoadingModal, closeLoadingModal } from "../modals/loadingModal";
 import { chat } from "../chat";
@@ -37,15 +38,29 @@ const Local = () => {
     }
   }, [chatList, params.id]);
 
+  const updateQuestion = async (index) => {
+    const result = await openEditModal({
+      msg: "編輯問題",
+      item: { name: messages[index].content },
+    });
+    if (result) {
+      const content = result.name;
+      inputRef.current.value = content;
+      const sendMessages = messages.slice(0, index);
+      updateChat(sendMessages);
+    }
+  };
+
   const inputRef = useRef();
-  const updateChat = async () => {
+  const updateChat = async (sendMessages = messages) => {
     const content = inputRef.current.value.trim();
     if (content.length === 0) {
       await openAlertModal("請輸入問題");
       return;
     }
+    inputRef.current.value = "";
     openLoadingModal("請稍等");
-    const message = [...messages, { role: "user", content }];
+    const message = [...sendMessages, { role: "user", content }];
     const res = await chat(message);
     const { data, success } = res;
     if (success) {
@@ -57,7 +72,6 @@ const Local = () => {
       saveChat(chatData);
       const list = getChatList();
       dispatch(setChatList(list));
-      inputRef.current.value = "";
       closeLoadingModal();
     } else {
       closeLoadingModal();
@@ -118,9 +132,15 @@ const Local = () => {
               <div key={index}>
                 {item.role === "user" ? (
                   <div className="flex jc:end mb:48">
-                    <p className="w:full max-w:80% max-w:90%@xs max-w:screen-2xs@md bg:#E2ECFC p:16 r:8 word-break:break-all;">
-                      {item.content}
-                    </p>
+                    <div className="w:full max-w:80% max-w:90%@xs max-w:screen-2xs@md bg:#E2ECFC p:32|16 r:8 word-break:break-all rel">
+                      <button
+                        onClick={() => updateQuestion(index)}
+                        className="f:14 fg:white bg:gray-70 p:4|8 r:4 abs top:0 right:0"
+                      >
+                        edit
+                      </button>
+                      <p> {item.content}</p>
+                    </div>
                   </div>
                 ) : (
                   <div className="mb:48">
@@ -161,7 +181,7 @@ const Local = () => {
                 className="resize:none block w:full p:16|48|16|16 r:8 line-height:1.5 bg:gray-5 b:1|solid|gray-20"
               ></textarea>
               <button
-                onClick={updateChat}
+                onClick={() => updateChat()}
                 className="abs top:50% right:16 translateY(-50%) f:20 inline-block transition:200ms ~easing:ease-in {fg:gray;}:hover"
               >
                 <i className="bi bi-send-fill"></i>

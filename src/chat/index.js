@@ -12,8 +12,10 @@ const chat = async (message) => {
   try {
     const messages = [{
       role: 'system',
-      content: '請用繁體中文搭配台灣人的語氣回答，如果是程式語言相關問題請優先用javascript回答。'
-    }, ...message];
+      content: `You are an assistant who replies in Traditional Chinese using a friendly tone like a Taiwanese person.
+                If the question involves programming, prioritize using JavaScript in your examples and explanations.
+                If the response contains any math formulas, always write them using LaTeX syntax and wrap them in '$...$' for inline math or '$$...$$' for block math, so they can be rendered correctly in Markdown.
+                `}, ...message];
     const res = await client.post(
       '/chat/completions',
       {

@@ -8,6 +8,10 @@ const client = axios.create({
   }
 });
 
+const removeThinkTags = (text) => {
+  return text.replace(/<think>[\s\S]*?<\/think>/g, '');
+};
+
 const chat = async (message) => {
   try {
     const messages = [{
@@ -26,7 +30,7 @@ const chat = async (message) => {
     if (res.status === 200) {
       const { role, content } = res.data.choices[0].message;
       const result = {
-        data: [{ role, content }],
+        data: [{ role, content: removeThinkTags(content) }],
         success: true
       };
       return result;

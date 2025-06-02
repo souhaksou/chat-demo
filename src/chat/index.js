@@ -19,7 +19,7 @@ const chat = async (message) => {
     const res = await client.post(
       '/chat/completions',
       {
-        model: "DeepSeek-R1",
+        model: `${import.meta.env.VITE_CHAT_MODEL}`,
         messages: messages
       }
     );

@@ -10,10 +10,6 @@ const client = axios.create({
 
 const chat = async (message) => {
   try {
-    console.log('a');
-    console.log('b', import.meta.env.VITE_CHAT_MODEL);
-    console.log('c');
-
     const messages = [{
       role: 'system',
       content: `You are an assistant who replies in Traditional Chinese using a friendly tone like a Taiwanese person.

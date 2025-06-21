@@ -8,8 +8,6 @@
 
 👉 [點此進入 Demo](https://chat-steel-eta.vercel.app/)
 
-> *請將上方網址替換為實際 Demo 網址*
-
 ## 🚀 技術架構
 
 - **React 18 + React Router v7**：建構單頁應用介面  
